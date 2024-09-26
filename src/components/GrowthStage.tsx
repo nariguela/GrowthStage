@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactEcharts from 'echarts-for-react'
+import * as echarts from 'echarts';
 import styles from './GrowthStage.module.css'
 
 interface ApiData {
@@ -37,19 +38,46 @@ export default function GrowthStage() {
         type: 'category',
         data: chartData.map(data => new Date(data.time * 1000).toLocaleDateString()), 
       },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
+      yAxis: [
         {
-          name: 'Degree Days',
-          data: chartData.map(data => data.degree_days),
-          type: 'line',
-          smooth: true,
+          type: 'value',
+          name: 'Precipitação (mm)',
+          min: 0,
+          max: 40,
+          position: 'left',
         },
+        {
+          type: 'value',
+          name: 'Temperatura (°C)',
+          min: 0,
+          max: 20,
+          position: 'right',
+          axisLine: {
+            lineStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgb(128, 255, 165)', 
+                },
+                {
+                  offset: 1,
+                  color: 'rgb(1, 191, 236)',
+                },
+              ]),
+            },
+          },
+        },
+      ],
+      series: [
         {
           name: 'Precipitation',
           data: chartData.map(data => data.precipitation),
+          type: 'bar',
+          smooth: true,
+        },
+        {
+          name: 'Degree Days',
+          data: chartData.map(data => data.degree_days),
           type: 'line',
           smooth: true,
         },
@@ -58,6 +86,19 @@ export default function GrowthStage() {
           data: chartData.map(data => data.ndvi),
           type: 'line',
           smooth: true,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgb(128, 255, 165)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(1, 191, 236)'
+              }
+            ])
+          },
         },
       ],
     };
