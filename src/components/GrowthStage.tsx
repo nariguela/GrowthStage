@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactEcharts from 'echarts-for-react'
+import styles from './GrowthStage.module.css'
 
 interface ApiData {
   degree_days: number;
@@ -64,9 +65,9 @@ export default function GrowthStage() {
   
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>GrowthStage</h2>
-      <ReactEcharts option={getChartOptions()} />
+      <ReactEcharts option={getChartOptions()} className={styles.chart} />
     </div>
   )
 }
